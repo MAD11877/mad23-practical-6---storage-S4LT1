@@ -3,6 +3,7 @@ package sg.edu.np.mad.madpractical;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Button followButton;
+    private Button messageButton;
     final String TITLE = "Main Activity";
     private User user;
     private TextView userID;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         user = new User("username", "description", 1, false);
         followButton = findViewById(R.id.button);
+        messageButton = findViewById(R.id.button2);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -49,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Unfollowed", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MessageGroup.class);
+                startActivity(intent);
             }
         });
 

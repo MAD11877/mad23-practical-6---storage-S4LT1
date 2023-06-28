@@ -97,6 +97,4 @@ public class ListActivity extends AppCompatActivity {
         Log.v(TITLE,"On Destroy!");
     }
 
-
-
 }

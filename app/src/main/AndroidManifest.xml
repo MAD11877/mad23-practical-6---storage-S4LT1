@@ -27,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MessageGroup"
+            android:label="Message Group">
+        </activity>
     </application>
 
 </manifest>

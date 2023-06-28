@@ -8,4 +8,7 @@
     <string name="appBar">MADPractical</string>
     <string name="mainText">Hello World!</string>
     <string name="sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
+
+    <string name="group1">Group 1</string>
+    <string name="group2">Group 2</string>
 </resources>
