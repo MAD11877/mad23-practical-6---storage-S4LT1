@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="MainActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="?attr/colorPrimary"
+            android:backgroundTint="@color/blue"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/appBar"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/mainText"
+            android:textColor="#595959"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/icon"
+            android:layout_centerHorizontal="true" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icon"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginTop="41dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_below="@+id/appBar"
+            android:layout_centerHorizontal="true"
+            app:shapeAppearanceOverlay="@style/Circular" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="305dp"
+            android:layout_height="85dp"
+            android:layout_marginTop="13dp"
+            android:text="@string/sample"
+            android:textAlignment="center"
+            android:textColor="#8E8E8E"
+            android:textSize="16sp"
+            android:layout_below="@id/textView2"
+            android:layout_centerHorizontal="true" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button2"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="53dp"
+            android:background="@drawable/buttons"
+            android:letterSpacing="0.1"
+            android:text="@string/buttonB"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/textView"
+            android:layout_marginTop="16dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="53dp"
+            android:background="@drawable/buttons"
+            android:letterSpacing="0.1"
+            android:text="@string/buttonA"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/textView"
+            android:layout_marginTop="16dp" />
+
+    </RelativeLayout>
+</ScrollView>

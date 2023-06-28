@@ -1,0 +1,9 @@
+<resources>
+    <string name="buttonA">Follow</string>
+    <string name="buttonA2">Unfollow</string>
+
+    <string name="buttonB">Message</string>
+    <string name="appBar">MADPractical</string>
+    <string name="mainText">Hello World!</string>
+    <string name="sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
+</resources>
