@@ -11,13 +11,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Random;
+
 
 public class MainActivity extends AppCompatActivity {
     private Button followButton;
     private Button messageButton;
     final String TITLE = "Main Activity";
-    private User user;
+    private static User user;
     private TextView userID;
+    private TextView userDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +32,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.v(TITLE, "On Create!");
 
-        user = new User("username", "description", 1, false);
         followButton = findViewById(R.id.button);
         messageButton = findViewById(R.id.button2);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            int num = extras.getInt("num");
+            user = (User) extras.getParcelable("user"); // Update this line
             userID = findViewById(R.id.textView2);
-            String displayText = "MAD " + num;
-            userID.setText(displayText);
+            String displayUser = user.username;
+            userID.setText(displayUser);
+
+            userDesc = findViewById(R.id.textView);
+            String displayDesc = user.description;
+            userDesc.setText(displayDesc);
         }
 
         userChangeButton();
@@ -98,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void userChangeButton(){
+
         if (user.followed){
             followButton.setText("Unfollow");
         }
