@@ -1,5 +1,6 @@
 package sg.edu.np.mad.madpractical;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,16 @@ public class customAdapter extends RecyclerView.Adapter<customAdapter.customView
     private ArrayList<User> users;
     private OnItemClickListener clickListener;
     private int imageResource;
+    private DBHandler dbHandler;
 
-    public customAdapter(ArrayList<User> input, int imageResource) {
+    public customAdapter(Context context, ArrayList<User> input, int imageResource) {
         if (input != null) {
             this.users = input;
         } else {
             this.users = new ArrayList<>();
         }
         this.imageResource = imageResource;
+        this.dbHandler = new DBHandler(context);
     }
 
     @NonNull
@@ -43,8 +46,8 @@ public class customAdapter extends RecyclerView.Adapter<customAdapter.customView
         // Get the current user's username
         String username = user.username;
 
-// Check if the username ends with 7
-        if (username.charAt(username.length()-1) == '7') {
+        // Check if the username ends with 7
+        if (username.charAt(username.length() - 1) == '7') {
             // Set visibility of the additional ImageView to View.VISIBLE
             holder.additionalImageView.setVisibility(View.VISIBLE);
         } else {
@@ -59,6 +62,25 @@ public class customAdapter extends RecyclerView.Adapter<customAdapter.customView
                 if (clickListener != null) {
                     int clickedPosition = holder.getAdapterPosition();
                     clickListener.onItemClick(clickedPosition);
+                }
+            }
+        });
+
+        // Set click listener on the additional ImageView
+        holder.additionalImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle the follow status of the user
+                user.followed = !user.followed;
+
+                // Update the user's follow status in the database
+                dbHandler.updateUser(user);
+
+                // Update the additional ImageView visibility based on the follow status
+                if (user.followed) {
+                    holder.additionalImageView.setVisibility(View.VISIBLE);
+                } else {
+                    holder.additionalImageView.setVisibility(View.GONE);
                 }
             }
         });
@@ -92,7 +114,5 @@ public class customAdapter extends RecyclerView.Adapter<customAdapter.customView
         }
     }
 }
-
-
 
 

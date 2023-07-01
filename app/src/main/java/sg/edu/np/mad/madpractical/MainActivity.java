@@ -11,19 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Random;
-
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     private Button followButton;
     private Button messageButton;
+    private TextView userNameTextView;
+    private TextView userDescTextView;
+    private DBHandler dbHandler;
+    private User currentUser;
+
     final String TITLE = "Main Activity";
-    private static User user;
-    private TextView userID;
-    private TextView userDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,35 +31,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.v(TITLE, "On Create!");
 
+        // Initialize DBHandler
+        dbHandler = new DBHandler(this);
+
         followButton = findViewById(R.id.button);
         messageButton = findViewById(R.id.button2);
+        userNameTextView = findViewById(R.id.textView2); // Update with the correct TextView ID
+        userDescTextView = findViewById(R.id.textView); // Update with the correct TextView ID
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            user = (User) extras.getParcelable("user"); // Update this line
-            userID = findViewById(R.id.textView2);
-            String displayUser = user.username;
-            userID.setText(displayUser);
+        // Retrieve the user ID from the intent
+        Intent intent = getIntent();
+        int userId = intent.getIntExtra("userId", -1);
+        if (userId != -1) {
+            // Get the user from the database using the ID
+            List<User> userList = dbHandler.getUsers();
+            for (User user : userList) {
+                if (user.id == userId) {
+                    currentUser = user;
+                    break;
+                }
+            }
 
-            userDesc = findViewById(R.id.textView);
-            String displayDesc = user.description;
-            userDesc.setText(displayDesc);
+            if (currentUser != null) {
+                // Update the UI with the user's details
+                userNameTextView.setText(String.valueOf(currentUser.username));
+                userDescTextView.setText(currentUser.description);
+                userChangeButton();
+            }
         }
-
-        userChangeButton();
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.followed = !user.followed;
-                userChangeButton();
+                if (currentUser != null) {
+                    // Update the current user's follow status
+                    currentUser.followed = !currentUser.followed;
+                    userChangeButton();
 
-                if (user.followed){
-                    Toast.makeText(MainActivity.this, "Followed", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Unfollowed", Toast.LENGTH_SHORT).show();
-                }
+                    // Update the user in the database
+                    dbHandler.updateUser(currentUser);
 
+                    if (currentUser.followed) {
+                        Toast.makeText(MainActivity.this, "Followed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Unfollowed", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -71,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -108,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void userChangeButton(){
 
-        if (user.followed){
+        if (currentUser.followed){
             followButton.setText("Unfollow");
         }
         else{

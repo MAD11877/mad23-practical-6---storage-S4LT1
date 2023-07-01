@@ -14,16 +14,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
 
     private ImageView icon;
     private ArrayList<User> userList;
-    int imageResource = R.mipmap.ic_launcher_round; // Replace with your desired image resource ID
-    customAdapter cuAdapter; // Declare the adapter here
+    private customAdapter cuAdapter;
+    private DBHandler dbHandler; // Declare the DBHandler instance
+    int imageResource = R.mipmap.ic_launcher_round;
 
     final String TITLE = "List Activity";
 
@@ -35,9 +35,9 @@ public class ListActivity extends AppCompatActivity {
         Log.v(TITLE, "On Create!");
 
         userList = new ArrayList<>();
-        createUser(userList);
+        dbHandler = new DBHandler(this); // Instantiate the DBHandler here
 
-        cuAdapter = new customAdapter(userList, imageResource); // Instantiate the adapter here
+        cuAdapter = new customAdapter(this, userList, imageResource);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -50,7 +50,6 @@ public class ListActivity extends AppCompatActivity {
         MarginItemDecoration itemDecorator = new MarginItemDecoration(margin);
         recyclerView.addItemDecoration(itemDecorator);
 
-        // Set click listener on the adapter
         cuAdapter.setOnItemClickListener(new customAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -67,11 +66,8 @@ public class ListActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
 
-                                Random random = new Random();
-                                int value = random.nextInt((int) Math.pow(10, 10));;
-
                                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                                intent.putExtra("user", selectedUser);
+                                intent.putExtra("userId", selectedUser.id); // Pass the user ID to MainActivity
                                 startActivity(intent);
                             }
                         });
@@ -88,6 +84,10 @@ public class ListActivity extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        // Load users from the database and update the userList
+        userList.addAll(dbHandler.getUsers());
+        cuAdapter.notifyDataSetChanged();
     }
 
 
@@ -119,19 +119,5 @@ public class ListActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         Log.v(TITLE,"On Destroy!");
-    }
-
-    public void createUser(ArrayList<User> arrayList){
-        for (int i=1;i<21;i++) {
-            byte[] array = new byte[10]; // length is bounded by 7
-            Random r = new Random();
-            long rangeStart = 1_000_000_000L;
-            long rangeEnd = 10_000_000_000L;
-            long generatedNumber = (long) (r.nextDouble() * (rangeEnd - rangeStart)) + rangeStart;
-            long generatedDesc = (long) (r.nextDouble() * (rangeEnd - rangeStart)) + rangeStart;
-
-            User newUser = new User("Name" + generatedNumber, "Desc" + generatedDesc, i, (Math.random() < 0.5));
-            arrayList.add(newUser);
-        }
     }
 }
